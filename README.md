@@ -1,2 +1,3 @@
 # seasontracker
-Tracks if TV shows have new (released) seasons using TMDB
+
+Tracks new season releases of TV shows using TMDB
