@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+requires-python = ">=3.10"
+name = "seasontracker"
+version = "0.1.0"
+description = "Tracks new season releases of TV shows using TMDB." 
+authors = [
+    { name = "Marc Serra Peralta", email = "marcserraperalta@gmail.com" },
+]
+maintainers = [
+    { name = "Marc Serra Peralta", email = "marcserraperalta@gmail.com" },
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+dependencies = [
+    "requests",
+]
+
+[tool.setuptools.packages.find]
+include = ["seasontracker", "seasontracker.*"]  # package names should match these glob patterns (["*"] by default)
+namespaces = false  # to disable scanning PEP 420 namespaces (true by default)
+
+[project.scripts]
+seasontracker = "seasontracker.cli:main"
+
