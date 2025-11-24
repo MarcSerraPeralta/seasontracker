@@ -9,7 +9,8 @@ from .tokens import (
     check_email,
     TOKEN_DIR,
 )
-from .gmail import send_test_email
+from .gmail import send_email
+from .seasons import get_status
 
 
 def main():
@@ -26,8 +27,10 @@ def main():
     login.add_argument("--overwrite", action="store_true", help="Overwrite parameter")
 
     status = sub.add_parser("status", help="Print status of TV shows")
+    status.add_argument("yaml_seasons", help="YAML file with the seasons information.")
 
     notify = sub.add_parser("notify", help="Sends status of TV shows via email")
+    notify.add_argument("yaml_seasons", help="YAML file with the seasons information.")
 
     args = parser.parse_args()
 
@@ -37,7 +40,12 @@ def main():
             gmail_pwd, error2 = get_token("gmail_app_password")
             if (error1 is None) and (error2 is None):
                 print(f"Sending test email to {email}...")
-                send_test_email(email, gmail_pwd)
+                send_email(
+                    sender=email,
+                    recipient=email,
+                    text="Test email from seasontracker!",
+                    gmail_app_password=gmail_pwd,
+                )
                 print("Sent!")
                 sys.exit(0)
             else:
@@ -156,12 +164,52 @@ def main():
                 sys.exit(1)
 
     elif args.command == "status":
-        print("NOT IMPLEMENTED")
-        sys.exit(1)
+        tmdb_token, error = get_token("tmdb_api")
+        if error is not None:
+            print("There has been a problem with the TMDB token configuration. ")
+            print("Run the following command for more information:")
+            print("")
+            print("    seasontracker login")
+            print("")
+            sys.exit(1)
+
+        for user, email, text in get_status(args.yaml_seasons, tmdb_token):
+            print(f"USER: {user}")
+            print(text)
+            print("")
+        sys.exit(0)
 
     elif args.command == "notify":
-        print("NOT IMPLEMENTED")
-        sys.exit(1)
+        tmdb_token, error = get_token("tmdb_api")
+        if error is not None:
+            print("There has been a problem with the TMDB token configuration. ")
+            print("Run the following command for more information:")
+            print("")
+            print("    seasontracker login")
+            print("")
+            sys.exit(1)
+
+        gmail_app_password, error = get_token("gmail_app_password")
+        if error is not None:
+            print("There has been a problem with the Gmail configuration. ")
+            print("Run the following command for more information:")
+            print("")
+            print("    seasontracker login")
+            print("")
+            sys.exit(1)
+
+        sender, error = get_token("email")
+        if error is not None:
+            print("There has been a problem with the Gmail configuration. ")
+            print("Run the following command for more information:")
+            print("")
+            print("    seasontracker login")
+            print("")
+            sys.exit(1)
+
+        for _, recipient, text in get_status(args.yaml_seasons, tmdb_token):
+            send_email(sender, recipient, text, gmail_app_password)
+        sys.exit(0)
 
     else:
         print(f"Option '{args.command}' not found. See")
