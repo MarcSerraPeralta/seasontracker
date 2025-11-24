@@ -66,3 +66,23 @@ def check_tmdb_token(token: object) -> None:
         error = resp.json().get("status_message")
         print(f"Error {resp.status_code}: {error}")
         sys.exit(1)
+
+
+def check_gmail_app_password(pwd: object) -> None:
+    if not isinstance(pwd, str):
+        print(f"Gmail app password must be a str, not {type(pwd)}.")
+        sys.exit(1)
+    return
+
+
+def check_email(email: object) -> None:
+    if not isinstance(email, str):
+        print(f"Email must be a str, not {type(email)}.")
+        sys.exit(1)
+    if email.count("@") != 1:
+        print("Email must contain only one '@'.")
+        sys.exit(1)
+    if email.split("@")[1] != "gmail.com":
+        print("Email must end with 'gmail.com'.")
+        sys.exit(1)
+    return
