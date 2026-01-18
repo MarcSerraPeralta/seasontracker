@@ -9,7 +9,7 @@ It prints or sends an email if new seasons are available.
 This package can be installed from source using:
 ```
 git clone git@github.com:MarcSerraPeralta/seasontracker.git
-cd ..
+cd seasontracker/
 pip install .
 ```
 
