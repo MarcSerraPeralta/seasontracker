@@ -3,7 +3,7 @@ import sys
 import pathlib
 import requests
 
-TOKEN_DIR = pathlib.Path.home() / ".config" / "seasontracker"
+TOKEN_DIR = pathlib.Path("/opt/seasontracker/")
 TMDB_API_URL = "https://api.themoviedb.org/3"
 
 
@@ -38,7 +38,7 @@ def get_token(token_name: str) -> tuple[str | None, str | None]:
         return (None, "FileNotFoundError")
 
     with open(token_path, "r") as file:
-        token = file.read()
+        token = file.read().rstrip()
 
     return (token, None)
 

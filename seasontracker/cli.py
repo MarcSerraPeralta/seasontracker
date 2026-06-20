@@ -36,8 +36,8 @@ def main():
 
     if args.command == "login":
         if args.send_test_email:
-            email, error1 = get_token("email")
-            gmail_pwd, error2 = get_token("gmail_app_password")
+            email, error1 = get_token("email.env")
+            gmail_pwd, error2 = get_token("gmail_app_password.env")
             if (error1 is None) and (error2 is None):
                 print(f"Sending test email to {email}...")
                 send_email(
@@ -61,9 +61,9 @@ def main():
             and (args.gmail_app_password is None)
             and (args.email is None)
         ):
-            tmdb_token, _ = get_token("tmdb_api")
-            gmail_pwd, _ = get_token("gmail_app_password")
-            email, _ = get_token("email")
+            tmdb_token, _ = get_token("tmdb_api.env")
+            gmail_pwd, _ = get_token("gmail_app_password.env")
+            email, _ = get_token("email.env")
             if tmdb_token is None:
                 print("Specify a TMDB API Read Access Token using:")
                 print("")
@@ -106,7 +106,7 @@ def main():
 
         if args.tmdb_token is not None:
             check_tmdb_token(args.tmdb_token)
-            error = store_token(args.tmdb_token, "tmdb_api", overwrite=args.overwrite)
+            error = store_token(args.tmdb_token, "tmdb_api.env", overwrite=args.overwrite)
             if error is None:
                 print(f"TMDB token stored in {TOKEN_DIR / 'tmdb_api'}")
                 sys.exit(0)
@@ -126,7 +126,7 @@ def main():
         if args.gmail_app_password is not None:
             check_gmail_app_password(args.gmail_app_password)
             error = store_token(
-                args.gmail_app_password, "gmail_app_password", overwrite=args.overwrite
+                args.gmail_app_password, "gmail_app_password.env", overwrite=args.overwrite
             )
             if error is None:
                 print(
@@ -148,7 +148,7 @@ def main():
 
         if args.email is not None:
             check_email(args.email)
-            error = store_token(args.email, "email", overwrite=args.overwrite)
+            error = store_token(args.email, "email.env", overwrite=args.overwrite)
             if error is None:
                 print(f"Email stored in {TOKEN_DIR / 'email'}")
                 sys.exit(0)
@@ -164,7 +164,7 @@ def main():
                 sys.exit(1)
 
     elif args.command == "status":
-        tmdb_token, error = get_token("tmdb_api")
+        tmdb_token, error = get_token("tmdb_api.env")
         if error is not None:
             print("There has been a problem with the TMDB token configuration. ")
             print("Run the following command for more information:")
@@ -180,7 +180,7 @@ def main():
         sys.exit(0)
 
     elif args.command == "notify":
-        tmdb_token, error = get_token("tmdb_api")
+        tmdb_token, error = get_token("tmdb_api.env")
         if error is not None:
             print("There has been a problem with the TMDB token configuration. ")
             print("Run the following command for more information:")
@@ -189,7 +189,7 @@ def main():
             print("")
             sys.exit(1)
 
-        gmail_app_password, error = get_token("gmail_app_password")
+        gmail_app_password, error = get_token("gmail_app_password.env")
         if error is not None:
             print("There has been a problem with the Gmail configuration. ")
             print("Run the following command for more information:")
@@ -198,7 +198,7 @@ def main():
             print("")
             sys.exit(1)
 
-        sender, error = get_token("email")
+        sender, error = get_token("email.env")
         if error is not None:
             print("There has been a problem with the Gmail configuration. ")
             print("Run the following command for more information:")
