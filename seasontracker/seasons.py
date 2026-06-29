@@ -4,8 +4,6 @@ import sys
 import requests
 import yaml
 
-from .tokens import TMDB_API_URL
-
 
 def get_status(
     yaml_file: str, tmdb_token: str
@@ -54,7 +52,7 @@ def get_status(
                 print("'last_watched_season' must be an int.")
                 sys.exit(1)
 
-            url = f"{TMDB_API_URL}/tv/{tmdbid}"
+            url = f"https://api.themoviedb.org/3/tv/{tmdbid}"
             resp = requests.get(
                 url,
                 headers={
